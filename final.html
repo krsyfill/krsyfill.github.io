@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISKUJ! - Rozstřel</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .final-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        #timer {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #d88194;
+            margin: 20px 0;
+            font-family: 'Georgia', serif;
+        }
+        #final-q-text {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            max-width: 900px;
+            min-height: 150px;
+        }
+        .final-controls {
+            display: flex;
+            gap: 20px;
+        }
+        #btn-start-timer {
+            background: var(--accent);
+            color: white;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #btn-next-final {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: #d88194;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #9b6b7a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .final-answer-btn {
+            margin-top: 20px;
+            padding: 1rem 2.5rem;
+            font-size: 1.3rem;
+            background: #b8e0b8;
+            color: #4e8c4e;
+            border: 2px solid #9cd09c;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .final-answer-btn:hover {
+            background: #a5d6a5;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Zpět do hry</a>
+    <div class="final-container">
+        <h1>Rozstřelové kolo</h1>
+        <p>Otázka se zobrazí po kliknutí na Start. Máte 10 sekund!</p>
+        
+        <div id="final-q-text">Připraveni?</div>
+        <div id="timer">10</div>
+
+        <div class="final-controls">
+            <button id="btn-start-timer">START (10s)</button>
+            <button id="btn-next-final">Další otázka</button>
+        </div>
+        
+        <div id="final-answer" style="margin-top: 30px; font-size: 1.5rem; color: #8ab68a; font-weight: bold; visibility: hidden;"></div>
+        <button id="btn-show-final-answer" class="final-answer-btn">Zobrazit odpověď</button>
+    </div>
+
+    <script>
+        const finalQuestions = [
+            { q: "Jak se jmenuje tradiční česká polévka z kopru a brambor?", a: "Kulajda" },
+            { q: "Která planeta je známá jako 'Červená planeta'?", a: "Mars" },
+            { q: "Jaké je křestní jméno nevěsty?", a: "(Dle reality)" },
+            { q: "V jakém městě se konala svatba?", a: "(Dle reality)" },
+            { q: "Kolik měsíců má rok?", a: "12" },
+            { q: "Jak se jmenuje nejvyšší hora České republiky?", a: "Sněžka" }
+        ];
+
+        let currentIdx = 0;
+        let timeLeft = 10;
+        let timerInterval = null;
+
+        const qText = document.getElementById('final-q-text');
+        const timerDisplay = document.getElementById('timer');
+        const ansDisplay = document.getElementById('final-answer');
+        const btnStart = document.getElementById('btn-start-timer');
+        const btnNext = document.getElementById('btn-next-final');
+        const btnShowAns = document.getElementById('btn-show-final-answer');
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timeLeft = 10;
+            timerDisplay.innerText = timeLeft;
+            timerDisplay.style.color = "#d88194";
+            
+            qText.innerText = finalQuestions[currentIdx].q;
+            ansDisplay.innerText = "Odpověď: " + finalQuestions[currentIdx].a;
+            ansDisplay.style.visibility = "hidden";
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+                
+                if (timeLeft <= 3) {
+                    timerDisplay.style.color = "red";
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "STOP!";
+                }
+            }, 1000);
+        }
+
+        btnStart.onclick = startTimer;
+        
+        btnNext.onclick = () => {
+            currentIdx = (currentIdx + 1) % finalQuestions.length;
+            qText.innerText = "Připraveni na další?";
+            timerDisplay.innerText = "10";
+            timerDisplay.style.color = "#d88194";
+            ansDisplay.style.visibility = "hidden";
+            if (timerInterval) clearInterval(timerInterval);
+        };
+
+        btnShowAns.onclick = () => {
+            ansDisplay.style.visibility = "visible";
+        };
+    </script>
+</body>
+</html>

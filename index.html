@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISKUJ!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>RISKUJ!</h1>
+            <p>Kvízová hra</p>
+            <div class="header-buttons">
+                <a href="final.html" class="final-btn-link">Rozstřel</a>
+                <button id="btn-settings">Nastavení</button>
+                <button id="btn-new-game">Nová hra</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="game-board" class="game-board">
+                <!-- Generováno JS -->
+            </div>
+        </main>
+
+        <aside id="scoreboard">
+            <h2>Skóre</h2>
+            <div id="teams-list">
+                <!-- Generováno JS -->
+            </div>
+        </aside>
+
+        <!-- Modal Otázka -->
+        <div id="modal-question" class="modal">
+            <div class="modal-content">
+                <div id="q-header">
+                    <span id="q-category">Kategorie</span>
+                    <span id="q-points">100</span>
+                </div>
+                <div id="q-body">
+                    <p id="q-text">Otázka...</p>
+                </div>
+                <div id="q-answer-container" class="hidden">
+                    <hr>
+                    <p id="q-answer">Odpověď...</p>
+                </div>
+                <div id="q-footer">
+                    <button id="btn-show-answer">Zobrazit odpověď</button>
+                    <div id="q-actions" class="hidden">
+                        <p>Kdo odpověděl?</p>
+                        <div id="q-team-buttons"></div>
+                        <button id="btn-nobody">Nikdo / Zavřít</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Nastavení -->
+        <div id="modal-settings" class="modal">
+            <div class="modal-content">
+                <h2>Nastavení</h2>
+                <div class="settings-section">
+                    <h3>Týmy</h3>
+                    <div id="settings-teams-list"></div>
+                    <button id="btn-add-team">Přidat tým</button>
+                </div>
+                <div class="settings-section">
+                    <h3>Akce</h3>
+                    <button id="btn-reset-game">Resetovat vše</button>
+                </div>
+                <button id="btn-close-settings">Zavřít</button>
+            </div>
+        </div>
+
+        <!-- Modal Konec hry -->
+        <div id="modal-endgame" class="modal">
+            <div class="modal-content">
+                <h2>Konec hry</h2>
+                <div id="endgame-results"></div>
+                <button id="btn-restart">Hrát znovu</button>
+                <a href="final.html" class="final-link">Pokračovat do finále (Rozstřel) →</a>
+            </div>
+        </div>
+    </div>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
