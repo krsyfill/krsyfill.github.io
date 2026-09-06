@@ -1,4 +1,5 @@
 // Stav hry
+let gameData = null;
 let teams = JSON.parse(localStorage.getItem('riskuj_teams')) || [
     { id: 1, name: "Tým 1", score: 0 },
     { id: 2, name: "Tým 2", score: 0 },
@@ -7,6 +8,19 @@ let teams = JSON.parse(localStorage.getItem('riskuj_teams')) || [
 ];
 let usedQuestions = []; // Ukládá řetězce "catIndex-qIndex"
 let selectedQuestion = null;
+let questionTimer = null;
+let questionTimeLeft = 20;
+
+async function loadGameData() {
+    try {
+        const response = await fetch('game_data.json');
+        gameData = await response.json();
+        init();
+    } catch (error) {
+        console.error('Chyba při načítání dat:', error);
+        gameBoard.innerHTML = '<p style="color:white; padding:20px;">Nepodařilo se načíst data hry. Ujistěte se, že game_data.json existuje.</p>';
+    }
+}
 
 function saveTeams() {
     localStorage.setItem('riskuj_teams', JSON.stringify(teams));
@@ -122,10 +136,50 @@ function openQuestion(catIdx, qIdx) {
     document.getElementById('q-actions').classList.add('hidden');
     document.getElementById('btn-show-answer').classList.remove('hidden');
 
+    // Speciální efekt pro Zlatou cihlu
+    if (q.question === "ZLATÁ CIHLA") {
+        modalQuestion.classList.add('gold-brick-active');
+        document.getElementById('q-timer').classList.add('q-timer-hidden');
+    } else {
+        modalQuestion.classList.remove('gold-brick-active');
+        startQuestionTimer();
+    }
+
     modalQuestion.classList.add('active');
 }
 
+function startQuestionTimer() {
+    stopQuestionTimer();
+    questionTimeLeft = 20;
+    const timerDisplay = document.getElementById('q-timer');
+    timerDisplay.innerText = questionTimeLeft;
+    timerDisplay.classList.remove('q-timer-hidden', 'low-time');
+
+    questionTimer = setInterval(() => {
+        questionTimeLeft--;
+        timerDisplay.innerText = questionTimeLeft;
+
+        if (questionTimeLeft <= 5) {
+            timerDisplay.classList.add('low-time');
+        }
+
+        if (questionTimeLeft <= 0) {
+            stopQuestionTimer();
+            timerDisplay.innerText = "!";
+        }
+    }, 1000);
+}
+
+function stopQuestionTimer() {
+    if (questionTimer) {
+        clearInterval(questionTimer);
+        questionTimer = null;
+    }
+}
+
 function showAnswer() {
+    stopQuestionTimer();
+    document.getElementById('q-timer').classList.add('q-timer-hidden');
     document.getElementById('q-answer-container').classList.remove('hidden');
     document.getElementById('btn-show-answer').classList.add('hidden');
     document.getElementById('q-actions').classList.remove('hidden');
@@ -166,6 +220,7 @@ function handleQuestionResult(teamId, isCorrect) {
 }
 
 function closeQuestion() {
+    stopQuestionTimer();
     const qId = selectedQuestion.qIdx === 'bonus' ? `bonus-${selectedQuestion.catIdx}` : `${selectedQuestion.catIdx}-${selectedQuestion.qIdx}`;
     if (!usedQuestions.includes(qId)) {
         usedQuestions.push(qId);
@@ -256,6 +311,17 @@ function resetGame() {
     }
 }
 
+function resetTeams() {
+    if (confirm('Opravdu chcete resetovat názvy všech týmů na výchozí?')) {
+        teams.forEach((team, idx) => {
+            team.name = `Tým ${team.id}`;
+        });
+        saveTeams();
+        renderScoreboard();
+        openSettings();
+    }
+}
+
 function openBonusQuestion(catIdx) {
     const cat = gameData.categories[catIdx];
     selectedQuestion = { catIdx, qIdx: 'bonus', points: 700 };
@@ -276,6 +342,7 @@ function setupEventListeners() {
     document.getElementById('btn-settings').onclick = openSettings;
     document.getElementById('btn-close-settings').onclick = () => modalSettings.classList.remove('active');
     document.getElementById('btn-add-team').onclick = addTeam;
+    document.getElementById('btn-reset-teams').onclick = resetTeams;
     document.getElementById('btn-reset-game').onclick = resetGame;
     document.getElementById('btn-new-game').onclick = resetGame;
     document.getElementById('btn-restart').onclick = resetGame;
@@ -284,13 +351,22 @@ function setupEventListeners() {
         closeQuestion();
     };
 
-    // Zavírání modalů klávesou Esc
+    // Zavírání modalů klávesou Esc a klávesové zkratky pro týmy
     window.onkeydown = (e) => {
         if (e.key === 'Escape') {
+            stopQuestionTimer();
             modalQuestion.classList.remove('active');
             modalSettings.classList.remove('active');
+        }
+        
+        // Klávesové zkratky 1-5 pro přidělení bodů týmu, pokud je zobrazená odpověď
+        if (modalQuestion.classList.contains('active') && !document.getElementById('q-actions').classList.contains('hidden')) {
+            const num = parseInt(e.key);
+            if (num >= 1 && num <= teams.length) {
+                handleQuestionResult(teams[num-1].id, true);
+            }
         }
     };
 }
 
-init();
+loadGameData();

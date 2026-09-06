@@ -13,22 +13,17 @@ Priorita:
 4. snadná úprava otázek a kategorií,
 5. žádná zbytečná technická složitost.
 
-## 2. Doporučený stack
+## 2. Realizovaný stack
 
-Použij jednoduchý frontendový stack:
+Použitý jednoduchý frontendový stack:
 
-- React
-- Vite
-- TypeScript
-- CSS / případně Tailwind CSS, pokud urychlí kvalitní UI
-- žádný backend
-- žádná databáze
-- stav aplikace drž pouze v React state
-- projekt musí být spustitelný pomocí:
-  - `npm install`
-  - `npm run dev`
-
-Nepřidávej knihovny, které nejsou pro základní funkčnost potřeba.
+- HTML5
+- CSS3 (Custom Properties, Grid, Flexbox)
+- Vanilla JavaScript (ES6+)
+- JSON pro externí data
+- Žádný build proces, žádný backend
+- Stav aplikace držen v LocalStorage a JS stavu
+- Projekt je spustitelný prostým otevřením `index.html` v prohlížeči.
 
 ## 3. Hlavní obrazovka
 
@@ -149,31 +144,24 @@ To je důležité pro případ, že moderátor udělá chybu.
 
 ## 8. Data otázek
 
-Otázky NEUKLÁDEJ přímo do komponent.
+Otázky jsou uloženy v externím souboru:
 
-Vytvoř samostatný datový soubor, například:
+`game_data.json`
 
-`src/data/gameData.ts`
-
-Struktura musí být snadno pochopitelná a upravitelná.
+Struktura je v JSON formátu, snadno pochopitelná a upravitelná.
 
 Například:
 
-```ts
-export const gameData = {
-  categories: [
+```json
+{
+  "categories": [
     {
-      name: "Historie",
-      questions: [
+      "name": "Historie",
+      "questions": [
         {
-          points: 100,
-          question: "Kdo byl prvním prezidentem České republiky?",
-          answer: "Václav Havel"
-        },
-        {
-          points: 200,
-          question: "...",
-          answer: "..."
+          "points": 100,
+          "question": "Kdo byl prvním prezidentem České republiky?",
+          "answer": "Václav Havel"
         }
       ]
     }
@@ -369,29 +357,19 @@ Nechci ale zbytečnou abstrakci. Komponenty vytvářej podle skutečné potřeby
 
 ## 19. README
 
-Vytvoř `README.md`, který vysvětlí:
+Projekt obsahuje `README.md`, který vysvětluje:
 
 1. co projekt obsahuje,
-2. jak nainstalovat závislosti,
-3. jak spustit localhost,
-4. kde upravit otázky,
-5. jak přidat / odebrat kategorie,
-6. jak fungují týmy a skóre.
-
-Příkazy musí být například:
-
-```bash
-npm install
-npm run dev
-```
+2. jak spustit hru (GitHub Pages nebo lokálně),
+3. kde upravit otázky,
+4. jak fungují týmy a skóre.
 
 ## 20. Acceptance criteria
 
 Projekt považuj za hotový až když:
 
-- `npm install` funguje,
-- `npm run dev` funguje,
-- aplikace se otevře na localhostu,
+- aplikace se otevře v prohlížeči z index.html,
+- data se korektně načítají z game_data.json,
 - je možné nastavit variabilní počet týmů,
 - je možné přejmenovat týmy,
 - skóre se správně počítá,

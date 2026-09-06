@@ -1,0 +1,87 @@
+{
+  "categories": [
+    {
+      "name": "Dětství",
+      "bonus": {
+        "question": "S jakým atletem a držitelem světového rekordu má ženich fotografii ze svých školních let?",
+        "answer": "Jan Železný"
+      },
+      "questions": [
+        { "points": 100, "question": "Zlomeninu které části těla si ženich přivodil v raném věku?", "answer": "Ruka" },
+        { "points": 200, "question": "V soutěži ve hře na který hudební nástroj se nevěsta dostala do krajského kola?", "answer": "(Zobcová) flétna" },
+        { "points": 300, "question": "ZLATÁ CIHLA", "answer": "Body zdarma" },
+        { "points": 400, "question": "Jaký kolektivní sport hrál ženich jako první?", "answer": "Fotbal" },
+        { "points": 500, "question": "Na jaký hudební nástroj hrál ženich ve školním roce přibližně půl roku, než toho zanechal?", "answer": "Akordeon" },
+        { "points": 600, "question": "V kolika letech se nevěsta poprvé podívala k moři?", "answer": "V 6 letech" }
+      ]
+    },
+    {
+      "name": "Naše poprvé",
+      "bonus": {
+        "question": "Jak se jmenuje první společný mazlíček novomanželů?",
+        "answer": "Jahoda"
+      },
+      "questions": [
+        { "points": 100, "question": "ZLATÁ CIHLA", "answer": "Body zdarma" },
+        { "points": 200, "question": "V jakém městě se novomanželé účastnili svého prvního běžeckého závodu?", "answer": "Plzeň" },
+        { "points": 300, "question": "V jaké destinaci prožili novomanželé svoji první dovolenou?", "answer": "Madeira (Portugalsko)" },
+        { "points": 400, "question": "Na jaře roku 2025 dokončili novomanželé svůj první společný půlmaraton ve městě na úpatí hor. Jaký je název tohoto města?", "answer": "Salzburg" },
+        { "points": 500, "question": "Jaký sport novomanželé zkusili oba poprvé až od doby, co se dali dohromady?", "answer": "Surfování / lezení / bikepacking / kuželky" },
+        { "points": 600, "question": "Kdo z nás udělal první krok?", "answer": "Individuální odpověď podle průběhu hry" }
+      ]
+    },
+    {
+      "name": "Oblíbené",
+      "bonus": {
+        "question": "Jaké je ženichovo oblíbené jídlo?",
+        "answer": "Sushi"
+      },
+      "questions": [
+        { "points": 100, "question": "Jaký je nevěstin oblíbený film?", "answer": "Láska nebeská" },
+        { "points": 200, "question": "Jaký je název oblíbené deskové hry, kterou si téměř nikdy nezahraje?", "answer": "Hra o trůny" },
+        { "points": 300, "question": "Jaké je příjmení režiséra ženichových oblíbených filmů?", "answer": "(Christopher) Nolan" },
+        { "points": 400, "question": "V únoru roku 2026 neodcestovali novomanželé do Nepálu kvůli geopolitické situaci. Jaký nevěstin oblíbený mléčný výrobek způsobil skvrny na její černé bundě?", "answer": "Kefír" },
+        { "points": 500, "question": "Jaký je slangový název nevěstina oblíbeného masového pokrmu, který si můžete objednat v Restauraci u Salzmannů?", "answer": "Tatarák" },
+        { "points": 600, "question": "ZLATÁ CIHLA", "answer": "Body zdarma" }
+      ]
+    },
+    {
+      "name": "Čísla",
+      "bonus": {
+        "question": "+/- 100 kg – kolik kilogramů jablek sklidili a využili novomanželé při sklizni v roce 2025?",
+        "answer": "610 kg (tolerance 510–710 kg)"
+      },
+      "questions": [
+        { "points": 100, "question": "Kolik nul má číslo jedna miliarda?", "answer": "9 nul" },
+        { "points": 200, "question": "V kolikátém nadzemním podlaží novomanželé bydlí?", "answer": "Ve 2. podlaží" },
+        { "points": 300, "question": "Ženich dostal ke kulatinám betonovou tvarovku. Jakou šířku v centimetrech měla?", "answer": "30 cm" },
+        { "points": 400, "question": "ZLATÁ CIHLA", "answer": "Body zdarma" },
+        { "points": 500, "question": "Kolik mají novomanželé celkem doma knih? (tolerance +/- 50 ks)", "answer": "Moderátor upřesní (cca 250)" },
+        { "points": 600, "question": "Za kolik dní ušli novomanželé svůj hike kolem Mont Blancu?", "answer": "9 dní" }
+      ]
+    },
+    {
+      "name": "Nevěsta / Ženich",
+      "bonus": {
+        "question": "Kdo spíše zalévá pokojové rostliny?",
+        "answer": "Ženich"
+      },
+      "questions": [
+        { "points": 100, "question": "Kdo je lepší ve vstávání?", "answer": "Ženich" },
+        { "points": 200, "question": "ZLATÁ CIHLA", "answer": "Body zdarma" },
+        { "points": 300, "question": "Kdo spíše plánuje dovolené?", "answer": "Nevěsta" },
+        { "points": 400, "question": "Za celou dobu aktivního běhání, kdo z novomanželů vystřídal více párů běžeckých bot?", "answer": "Nevěsta (6 párů)" },
+        { "points": 500, "question": "Kdo první řekl „miluji tě“?", "answer": "Ženich" },
+        { "points": 600, "question": "Kdo spíše doma peče?", "answer": "Nevěsta" }
+      ]
+    }
+  ],
+  "final": [
+    { "q": "Kolik hostů je dnes na svatbě včetně novomanželů?", "a": "65" },
+    { "q": "Kolik kilometrů měří po dálnici cesta ženicha z bydliště do kanceláře v Praze?", "a": "93 km" },
+    { "q": "Kolik svatebních oznámení bylo celkem vytištěno?", "a": "32" },
+    { "q": "Kolik litrů prosecca bylo celkem na svatbu přivezeno?", "a": "20 litrů" },
+    { "q": "Kolik dní uplynulo od zásnub do dnešní svatby?", "a": "359 dní" },
+    { "q": "O kolik dní je ženich starší než nevěsta?", "a": "418 dní" }
+  ]
+}

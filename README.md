@@ -7,7 +7,7 @@ Jednoduchý, moderní a plně interaktivní projekt pro hru Riskuj (Jeopardy), p
 Tento projekt je ideální pro hostování na GitHub Pages, protože je tvořen čistě statickými soubory.
 
 1. **Vytvořte repository** na GitHubu.
-2. **Nahrajte soubory** (`index.html`, `final.html`, `style.css`, `data.js`, `script.js`) do hlavní větve (main/master).
+2. **Nahrajte soubory** (`index.html`, `final.html`, `style.css`, `game_data.json`, `script.js`) do hlavní větve (main/master).
 3. V nastavení repository (**Settings**) přejděte do sekce **Pages**.
 4. V části **Build and deployment** vyberte jako zdroj (**Source**) možnost "Deploy from a branch".
 5. Vyberte větev `main` (nebo `master`) a složku `/ (root)`.
@@ -25,26 +25,34 @@ Vzhledem k tomu, že projekt nevyžaduje žádný build ani backend, stačí jej
 
 - `index.html`: Hlavní struktura aplikace a modální okna.
 - `style.css`: Elegantní pastelový vzhled ideální pro svatby a oslavy.
-- `data.js`: Obsahuje herní data (kategorie, otázky, odpovědi a body).
+- `game_data.json`: Obsahuje herní data (kategorie, otázky, odpovědi a body) ve formátu JSON.
 - `script.js`: Logika hry, správa skóre, přepínání stavů a ovládání UI.
 
 ## Jak upravit otázky
 
-Všechny otázky najdete v souboru `data.js`. Struktura vypadá následovně:
+Všechny otázky najdete v souboru `game_data.json`. Struktura vypadá následovně:
 
-```javascript
-const gameData = {
-    categories: [
-        {
-            name: "Název Kategorie",
-            questions: [
-                { points: 100, question: "Znění otázky?", answer: "Odpověď" },
-                // ... dalších 5 otázek
-            ]
-        },
-        // ... celkem 5 kategorií
-    ]
-};
+```json
+{
+  "categories": [
+    {
+      "name": "Název Kategorie",
+      "bonus": {
+        "question": "Bonusová otázka za 700 bodů?",
+        "answer": "Odpověď"
+      },
+      "questions": [
+        { "points": 100, "question": "Znění otázky?", "answer": "Odpověď" },
+        // ... celkem 6 otázek (100-600)
+      ]
+    },
+    // ... celkem 5 kategorií
+  ],
+  "final": [
+    { "q": "Otázka pro rozstřel?", "a": "Odpověď" },
+    // ... celkem 6 otázek
+  ]
+}
 ```
 
 Chcete-li změnit počet řádků nebo sloupců, stačí přidat/odebrat objekty v `categories` nebo prvky v poli `questions`. UI se dynamicky přizpůsobí.

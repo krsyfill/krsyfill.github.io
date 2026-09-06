@@ -91,19 +91,12 @@
             <button id="btn-next-final">Další otázka</button>
         </div>
         
-        <div id="final-answer" style="margin-top: 30px; font-size: 1.5rem; color: #8ab68a; font-weight: bold; visibility: hidden;"></div>
+        <div id="final-answer" style="margin-top: 30px; font-size: 2.2rem; color: #8ab68a; font-weight: bold; visibility: hidden;"></div>
         <button id="btn-show-final-answer" class="final-answer-btn">Zobrazit odpověď</button>
     </div>
 
     <script>
-        const finalQuestions = [
-            { q: "Jak se jmenuje tradiční česká polévka z kopru a brambor?", a: "Kulajda" },
-            { q: "Která planeta je známá jako 'Červená planeta'?", a: "Mars" },
-            { q: "Jaké je křestní jméno nevěsty?", a: "(Dle reality)" },
-            { q: "V jakém městě se konala svatba?", a: "(Dle reality)" },
-            { q: "Kolik měsíců má rok?", a: "12" },
-            { q: "Jak se jmenuje nejvyšší hora České republiky?", a: "Sněžka" }
-        ];
+        let finalQuestions = [];
 
         let currentIdx = 0;
         let timeLeft = 10;
@@ -116,7 +109,19 @@
         const btnNext = document.getElementById('btn-next-final');
         const btnShowAns = document.getElementById('btn-show-final-answer');
 
+        async function loadFinalData() {
+            try {
+                const response = await fetch('game_data.json');
+                const data = await response.json();
+                finalQuestions = data.final;
+            } catch (error) {
+                console.error('Chyba při načítání dat:', error);
+                qText.innerText = "Chyba při načítání dat.";
+            }
+        }
+
         function startTimer() {
+            if (finalQuestions.length === 0) return;
             if (timerInterval) clearInterval(timerInterval);
             
             timeLeft = 10;
@@ -142,9 +147,12 @@
             }, 1000);
         }
 
+        loadFinalData();
+
         btnStart.onclick = startTimer;
         
         btnNext.onclick = () => {
+            if (finalQuestions.length === 0) return;
             currentIdx = (currentIdx + 1) % finalQuestions.length;
             qText.innerText = "Připraveni na další?";
             timerDisplay.innerText = "10";
