@@ -10,38 +10,108 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start; /* Změna z center na flex-start pro lepší scrollování při zoomu */
+            min-height: 100vh;
             text-align: center;
-            padding: 20px;
+            padding: 4rem 2.5rem;
+            box-sizing: border-box;
         }
+        
+        h1 {
+            color: #d88194;
+            font-family: 'Georgia', serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions {
+            color: #9b6b7a;
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
         #timer {
-            font-size: 8rem;
+            font-size: clamp(5rem, 15vw, 10rem);
             font-weight: bold;
             color: #d88194;
-            margin: 20px 0;
+            margin: 1.5rem 0;
             font-family: 'Georgia', serif;
+            width: clamp(150px, 30vh, 250px); /* Responzivnější velikost vůči výšce */
+            height: clamp(150px, 30vh, 250px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 10px solid var(--accent);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(255, 183, 197, 0.3);
+            transition: all 0.3s;
+            flex-shrink: 0;
+            line-height: 1;
+            padding-top: 0.1em; /* Optické vycentrování čísla */
         }
+        
+        #timer.low-time {
+            color: #ff0000;
+            border-color: #ff0000;
+            animation: pulse-red 0.8s infinite;
+        }
+
+        #timer.timer-stop {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            width: auto;
+            height: auto;
+            color: #ff0000;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 0, 0, 0); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 0, 0, 0); }
+        }
+
         #final-q-text {
-            font-size: 3rem;
-            margin-bottom: 40px;
-            max-width: 900px;
-            min-height: 150px;
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            margin-bottom: 3rem;
+            max-width: 1000px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            line-height: 1.2;
+            color: var(--text-color);
         }
+
         .final-controls {
             display: flex;
-            gap: 20px;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
+
         #btn-start-timer {
             background: var(--accent);
             color: white;
-            padding: 1.5rem 3rem;
+            padding: 1.2rem 3rem;
             font-size: 1.5rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 6px 20px rgba(255, 183, 197, 0.4);
+            transition: all 0.2s;
         }
+
+        #btn-start-timer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 183, 197, 0.5);
+        }
+
         #btn-next-final {
             background: white;
             border: 2px solid var(--border-color);
@@ -50,30 +120,73 @@
             font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        
+        #btn-next-final:hover {
+            background: var(--header-bg);
+        }
+
         .back-link {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #9b6b7a;
+            top: 2rem;
+            left: 2rem;
+            color: #d88194;
             text-decoration: none;
             font-weight: bold;
+            padding: 0.6rem 1.2rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            transition: all 0.2s;
+            z-index: 10;
         }
+        
+        .back-link:hover {
+            background: var(--accent);
+            color: white;
+        }
+
         .final-answer-btn {
-            margin-top: 20px;
-            padding: 1rem 2.5rem;
-            font-size: 1.3rem;
-            background: #b8e0b8;
-            color: #4e8c4e;
+            margin-top: 2rem;
+            padding: 1.2rem 3rem;
+            font-size: 1.4rem;
+            background: #f0fff0;
+            color: #2d5a2d;
             border: 2px solid #9cd09c;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
+        
         .final-answer-btn:hover {
-            background: #a5d6a5;
+            background: #e0f5e0;
             transform: scale(1.05);
+        }
+
+        #final-answer {
+            margin-top: 2rem;
+            font-size: clamp(1.2rem, 4vw, 2.8rem);
+            color: #6a9e6a;
+            font-weight: bold;
+            font-style: italic;
+            padding: 1rem;
+            border-top: 2px dashed var(--border-color);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        @media (max-width: 600px) {
+            #timer {
+                width: 180px;
+                height: 180px;
+                font-size: 5rem;
+            }
+            .final-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -126,7 +239,7 @@
             
             timeLeft = 10;
             timerDisplay.innerText = timeLeft;
-            timerDisplay.style.color = "#d88194";
+            timerDisplay.classList.remove('low-time', 'timer-stop');
             
             qText.innerText = finalQuestions[currentIdx].q;
             ansDisplay.innerText = "Odpověď: " + finalQuestions[currentIdx].a;
@@ -137,12 +250,13 @@
                 timerDisplay.innerText = timeLeft;
                 
                 if (timeLeft <= 3) {
-                    timerDisplay.style.color = "red";
+                    timerDisplay.classList.add('low-time');
                 }
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     timerDisplay.innerText = "STOP!";
+                    timerDisplay.classList.add('timer-stop');
                 }
             }, 1000);
         }
@@ -156,7 +270,7 @@
             currentIdx = (currentIdx + 1) % finalQuestions.length;
             qText.innerText = "Připraveni na další?";
             timerDisplay.innerText = "10";
-            timerDisplay.style.color = "#d88194";
+            timerDisplay.classList.remove('low-time', 'timer-stop');
             ansDisplay.style.visibility = "hidden";
             if (timerInterval) clearInterval(timerInterval);
         };

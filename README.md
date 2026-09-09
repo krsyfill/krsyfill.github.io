@@ -38,7 +38,7 @@ Všechny otázky najdete v souboru `game_data.json`. Struktura vypadá následov
     {
       "name": "Název Kategorie",
       "bonus": {
-        "question": "Bonusová otázka za 700 bodů?",
+        "question": "Bonusová otázka za 800 bodů?",
         "answer": "Odpověď"
       },
       "questions": [
@@ -59,11 +59,18 @@ Chcete-li změnit počet řádků nebo sloupců, stačí přidat/odebrat objekty
 
 ## Funkce
 
-- **Variabilní počet týmů**: V nastavení můžete přidávat, odebírat a přejmenovávat týmy.
-- **Bodování**: Po zobrazení odpovědi můžete body přičíst (+) nebo odečíst (-) vybranému týmu.
-- **Ruční korekce**: Skóre lze u každého týmu kdykoliv upravit tlačítky +100/-100 v bočním panelu.
-- **Bonusové otázky**: Po vyčerpání sloupce se aktivuje hlavička s bonusovou otázkou za 700 bodů.
-- **Rozstřel**: Samostatná stránka s časovačem pro rychlé finálové otázky.
-- **Persistence**: Stav hry (body, použité otázky) se ukládá v prohlížeči, takže se neztratí při náhodném obnovení stránky.
-- **Konec hry**: Po vyčerpání všech otázek se zobrazí výsledková listina s vítězem.
-- **Restart**: Možnost kdykoliv resetovat celou hru.
+- **Variabilní počet týmů**: V nastavení můžete přidávat, odebírat a přejmenovávat týmy. Není zde žádný pevný limit na počet týmů.
+- **Bodování a Aktivní tým**: Kliknutím na kartu týmu v bočním panelu jej označíte jako **aktivní** (na řadě - označen hvězdičkou). Body jsou tomuto týmu prioritně nabízeny v modálním okně.
+- **Automatické střídání**: Po započítání bodů se aktivní tým automaticky přepne na dalšího v pořadí.
+- **Ruční korekce**: Skóre lze upravit tlačítky +100/-100, nebo **kliknutím přímo na číslo skóre** pro ruční zadání libovolné hodnoty.
+- **Zlatá cihla**: Speciální typ "otázky", který po otevření okamžitě nabízí body zdarma bez nutnosti odpovídat (obsahuje animaci).
+- **Bonusové otázky**: Po vyčerpání sloupce se aktivuje hlavička s bonusovou otázkou za **800 bodů**.
+- **Klávesové zkratky**: 
+    - **Mezerník**: Zobrazit odpověď.
+    - **Čísla (1-9)**: Přidělit body odpovídajícímu týmu v seznamu.
+    - **Plus (+) / Mínus (-)**: Přidělit/odečíst body **aktivnímu týmu**.
+    - **Esc**: Zavřít modální okno.
+- **Responzivita a Zoom**: Hra je optimalizována pro zobrazení na projektoru. Layout se přizpůsobuje i při velkém přiblížení (zoomu) a modální okna umožňují scrollování, pokud je text příliš dlouhý.
+- **Rozstřel**: Samostatná stránka s 10sekundovým časovačem pro finálové otázky. V okamžiku "STOP!" se vizuálně vyčistí pro maximální čitelnost.
+- **Persistence**: Stav hry (body, použité otázky, aktivní tým) se ukládá v prohlížeči.
+- **Konec hry**: Po vyčerpání všech otázek se zobrazí výsledková listina s efektem konfet.

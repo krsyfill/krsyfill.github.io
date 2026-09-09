@@ -11,6 +11,8 @@ let selectedQuestion = null;
 let questionTimer = null;
 let questionTimeLeft = 20;
 
+let activeTeamId = JSON.parse(localStorage.getItem('riskuj_active_team')) || null;
+
 async function loadGameData() {
     try {
         const response = await fetch('game_data.json');
@@ -42,6 +44,9 @@ function init() {
     renderBoard();
     renderScoreboard();
     setupEventListeners();
+    
+    // Pokud je hra u konce, ukázat výsledky
+    checkEndGame();
 }
 
 function saveUsed() {
@@ -100,10 +105,16 @@ function renderScoreboard() {
     teamsList.innerHTML = '';
     teams.forEach(team => {
         const div = document.createElement('div');
-        div.className = 'team-item';
+        div.className = `team-item ${team.id === activeTeamId ? 'active-team' : ''}`;
+        div.onclick = (e) => {
+            // Změnit aktivní tým pouze pokud se nekliklo na tlačítka skóre
+            if (!e.target.closest('.team-controls') && !e.target.closest('.team-score')) {
+                toggleActiveTeam(team.id);
+            }
+        };
         div.innerHTML = `
             <span class="team-name">${team.name}</span>
-            <span class="team-score">${team.score}</span>
+            <span class="team-score" title="Klikněte pro ruční úpravu" onclick="editScorePrompt(${team.id})">${team.score}</span>
             <div class="team-controls">
                 <button onclick="updateScore(${team.id}, 100)">+100</button>
                 <button onclick="updateScore(${team.id}, -100)">-100</button>
@@ -111,6 +122,28 @@ function renderScoreboard() {
         `;
         teamsList.appendChild(div);
     });
+}
+
+function toggleActiveTeam(teamId) {
+    if (activeTeamId === teamId) {
+        activeTeamId = null;
+    } else {
+        activeTeamId = teamId;
+    }
+    localStorage.setItem('riskuj_active_team', JSON.stringify(activeTeamId));
+    renderScoreboard();
+}
+
+function editScorePrompt(teamId) {
+    const team = teams.find(t => t.id === teamId);
+    if (!team) return;
+    
+    const newScore = prompt(`Zadejte nové skóre pro tým ${team.name}:`, team.score);
+    if (newScore !== null && !isNaN(parseInt(newScore))) {
+        team.score = parseInt(newScore);
+        saveTeams();
+        renderScoreboard();
+    }
 }
 
 function updateScore(teamId, amount) {
@@ -184,17 +217,34 @@ function showAnswer() {
     document.getElementById('btn-show-answer').classList.add('hidden');
     document.getElementById('q-actions').classList.remove('hidden');
 
+    const activeTeamShortcut = document.getElementById('active-team-shortcut');
+    const activeTeam = teams.find(t => t.id === activeTeamId);
+
+    if (activeTeam) {
+        activeTeamShortcut.classList.remove('hidden');
+        document.getElementById('active-team-name-display').innerText = activeTeam.name;
+        document.getElementById('btn-active-correct').onclick = () => handleQuestionResult(activeTeam.id, true);
+        document.getElementById('btn-active-wrong').onclick = () => handleQuestionResult(activeTeam.id, false);
+        document.getElementById('q-other-teams-label').innerText = "Odpověděl jiný tým?";
+    } else {
+        activeTeamShortcut.classList.add('hidden');
+        document.getElementById('q-other-teams-label').innerText = "Kdo odpověděl?";
+    }
+
     // Generovat tlačítka týmů pro přidání/odebrání bodů
     const container = document.getElementById('q-team-buttons');
     container.innerHTML = '';
     teams.forEach(team => {
+        // Preskočíme aktivní tým v seznamu "ostatních", pokud je už nahoře (volitelné, ale přehlednější)
+        // Ne, necháme je tam pro jistotu, ale vizuálně je to jedno.
+        
         const btnCorrect = document.createElement('button');
-        btnCorrect.className = 'q-team-btn correct';
+        btnCorrect.className = `q-team-btn correct ${team.id === activeTeamId ? 'active-team-btn-border' : ''}`;
         btnCorrect.innerText = `${team.name} +`;
         btnCorrect.onclick = () => handleQuestionResult(team.id, true);
 
         const btnWrong = document.createElement('button');
-        btnWrong.className = 'q-team-btn wrong';
+        btnWrong.className = `q-team-btn wrong ${team.id === activeTeamId ? 'active-team-btn-border' : ''}`;
         btnWrong.innerText = `${team.name} -`;
         btnWrong.onclick = () => handleQuestionResult(team.id, false);
 
@@ -214,6 +264,15 @@ function handleQuestionResult(teamId, isCorrect) {
         const points = selectedQuestion.points;
         updateScore(teamId, isCorrect ? points : -points);
         
+        // Automaticky přepnout na další tým v pořadí
+        const currentIndex = teams.findIndex(t => t.id === teamId);
+        if (currentIndex !== -1) {
+            const nextIndex = (currentIndex + 1) % teams.length;
+            activeTeamId = teams[nextIndex].id;
+            localStorage.setItem('riskuj_active_team', JSON.stringify(activeTeamId));
+            renderScoreboard();
+        }
+
         // Zavřeme otázku po jakémkoliv přidělení bodů (kladných i záporných)
         closeQuestion();
     }
@@ -254,6 +313,32 @@ function showEndGame() {
     });
 
     modalEndGame.classList.add('active');
+    createConfetti();
+}
+
+function createConfetti() {
+    const container = document.createElement('div');
+    container.className = 'confetti-container';
+    document.body.appendChild(container);
+
+    const colors = ['#ffb7c5', '#d88194', '#7bbcd5', '#b8e0b8', '#ffd700'];
+
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+        container.appendChild(confetti);
+    }
+
+    // Odstranit po 10 sekundách
+    setTimeout(() => {
+        container.remove();
+    }, 10000);
 }
 
 // Nastavení
@@ -280,10 +365,6 @@ function renameTeam(id, newName) {
 }
 
 function addTeam() {
-    if (teams.length >= 5) {
-        alert("Maximální počet týmů je 5.");
-        return;
-    }
     const newId = teams.length > 0 ? Math.max(...teams.map(t => t.id)) + 1 : 1;
     teams.push({ id: newId, name: `Tým ${newId}`, score: 0 });
     saveTeams();
@@ -302,12 +383,17 @@ function resetGame() {
     if (confirm('Opravdu chcete restartovat celou hru?')) {
         usedQuestions = [];
         teams.forEach(t => t.score = 0);
+        activeTeamId = null;
         saveTeams();
         saveUsed();
+        localStorage.removeItem('riskuj_active_team');
         renderBoard();
         renderScoreboard();
         modalSettings.classList.remove('active');
         modalEndGame.classList.remove('active');
+        
+        const confetti = document.querySelector('.confetti-container');
+        if (confetti) confetti.remove();
     }
 }
 
@@ -324,10 +410,10 @@ function resetTeams() {
 
 function openBonusQuestion(catIdx) {
     const cat = gameData.categories[catIdx];
-    selectedQuestion = { catIdx, qIdx: 'bonus', points: 700 };
+    selectedQuestion = { catIdx, qIdx: 'bonus', points: 800 };
 
     document.getElementById('q-category').innerText = cat.name;
-    document.getElementById('q-points').innerText = "BONUS 700";
+    document.getElementById('q-points').innerText = "BONUS 800";
     document.getElementById('q-text').innerText = cat.bonus.question;
     document.getElementById('q-answer').innerText = cat.bonus.answer;
 
@@ -339,6 +425,8 @@ function openBonusQuestion(catIdx) {
 }
 
 function setupEventListeners() {
+    document.getElementById('btn-help').onclick = () => document.getElementById('modal-help').classList.add('active');
+    document.getElementById('btn-close-help').onclick = () => document.getElementById('modal-help').classList.remove('active');
     document.getElementById('btn-settings').onclick = openSettings;
     document.getElementById('btn-close-settings').onclick = () => modalSettings.classList.remove('active');
     document.getElementById('btn-add-team').onclick = addTeam;
@@ -357,13 +445,29 @@ function setupEventListeners() {
             stopQuestionTimer();
             modalQuestion.classList.remove('active');
             modalSettings.classList.remove('active');
+            document.getElementById('modal-help').classList.remove('active');
         }
         
-        // Klávesové zkratky 1-5 pro přidělení bodů týmu, pokud je zobrazená odpověď
+        // Mezerník pro zobrazení odpovědi, pokud je otevřen modál otázky
+        if (e.code === 'Space' && modalQuestion.classList.contains('active') && !document.getElementById('btn-show-answer').classList.contains('hidden')) {
+            e.preventDefault();
+            showAnswer();
+        }
+
+        // Klávesové zkratky 1-9 pro přidělení bodů týmu, pokud je zobrazená odpověď
         if (modalQuestion.classList.contains('active') && !document.getElementById('q-actions').classList.contains('hidden')) {
             const num = parseInt(e.key);
             if (num >= 1 && num <= teams.length) {
                 handleQuestionResult(teams[num-1].id, true);
+            }
+
+            // Klávesové zkratky + a - pro aktivní tým
+            if (activeTeamId) {
+                if (e.key === '+' || e.key === '=') {
+                    handleQuestionResult(activeTeamId, true);
+                } else if (e.key === '-' || e.key === '_') {
+                    handleQuestionResult(activeTeamId, false);
+                }
             }
         }
     };

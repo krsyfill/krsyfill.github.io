@@ -13,6 +13,7 @@
             <p>Kvízová hra</p>
             <div class="header-buttons">
                 <a href="final.html" class="final-btn-link">Rozstřel</a>
+                <button id="btn-help">Nápověda</button>
                 <button id="btn-settings">Nastavení</button>
                 <button id="btn-new-game">Nová hra</button>
             </div>
@@ -48,7 +49,15 @@
                 <div id="q-footer">
                     <button id="btn-show-answer">Zobrazit odpověď</button>
                     <div id="q-actions" class="hidden">
-                        <p>Kdo odpověděl?</p>
+                        <div id="active-team-shortcut" class="hidden">
+                            <p>Tým na řadě: <strong id="active-team-name-display"></strong></p>
+                            <div class="active-team-btns">
+                                <button id="btn-active-correct" class="q-team-btn correct">SPRÁVNĚ (+)</button>
+                                <button id="btn-active-wrong" class="q-team-btn wrong">ŠPATNĚ (-)</button>
+                            </div>
+                            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color); opacity: 0.5;">
+                        </div>
+                        <p id="q-other-teams-label">Odpověděl jiný tým?</p>
                         <div id="q-team-buttons"></div>
                         <button id="btn-nobody">Nikdo / Zavřít</button>
                     </div>
@@ -81,6 +90,42 @@
                 <div id="endgame-results"></div>
                 <button id="btn-restart">Hrát znovu</button>
                 <a href="final.html" class="final-link">Pokračovat do finále (Rozstřel) →</a>
+            </div>
+        </div>
+
+        <!-- Modal Nápověda -->
+        <div id="modal-help" class="modal">
+            <div class="modal-content help-content">
+                <h2>Jak hrát RISKUJ!</h2>
+                <div class="help-section">
+                    <h3>Pravidla hry</h3>
+                    <ul>
+                        <li>Hra je rozdělena do 5 kategorií s otázkami různé bodové hodnoty (100–600 bodů).</li>
+                        <li>Tým, který je na řadě, si vybere kategorii a bodovou hodnotu.</li>
+                        <li><strong>ZLATÁ CIHLA:</strong> Skrytá odměna! Tým, který si ji vybere, získává body zdarma bez otázky.</li>
+                        <li><strong>BONUSOVÁ OTÁZKA:</strong> Odemkne se po zodpovězení všech otázek v dané kategorii. Kliknutím na název kategorie se otevře bonusová otázka za <strong>800 bodů</strong>.</li>
+                        <li><strong>Časový limit:</strong> Na každou otázku je limit 20 sekund.</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>Bodování a ovládání</h3>
+                    <ul>
+                        <li>Po přečtení otázky a uplynutí času (nebo dřívějším zodpovězení) klikněte na <strong>"Zobrazit odpověď"</strong> (nebo stiskněte <strong>Mezerník</strong>).</li>
+                        <li>Následně vyberte tým a stiskněte <strong>"+"</strong> pro přičtení bodů nebo <strong>"-"</strong> pro odečtení.</li>
+                        <li>Pokud nikdo neodpověděl, použijte tlačítko <strong>"Nikdo / Zavřít"</strong>.</li>
+                        <li>Skóre lze ručně korigovat v pravém panelu pomocí tlačítek +100/-100, nebo <strong>kliknutím přímo na číslo skóre</strong> pro ruční zadání.</li>
+                        <li>Kliknutím na kartu týmu v pravém panelu jej označíte jako <strong>aktivní</strong> (na řadě).</li>
+                        <li>Klávesové zkratky: Čísla <strong>1, 2, 3, ...</strong> na klávesnici přidělí body odpovídajícímu týmu po zobrazení odpovědi. Pro aktivní tým můžete použít klávesy <strong>"+"</strong> a <strong>"-"</strong>. <strong>Esc</strong> zavře modální okno.</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>Finále (Rozstřel)</h3>
+                    <ul>
+                        <li>Po odehrání všech otázek se zobrazí celkové pořadí.</li>
+                        <li>Následně se můžete přesunout do speciálního rozstřelu tlačítkem "Pokračovat do finále".</li>
+                    </ul>
+                </div>
+                <button id="btn-close-help">Zavřít nápovědu</button>
             </div>
         </div>
     </div>
